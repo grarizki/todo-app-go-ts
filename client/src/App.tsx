@@ -34,9 +34,12 @@ function App() {
         width: '100%',
         maxWidth: '40rem',
         margin: '0 auto',
+        background: '#23DEB7',
+        borderRadius: '20px',
+        marginTop: '5rem',
       })}
     >
-      <List spacing="xs" size="sm" mb={12} center>
+      <List spacing="xs" size="md" mb={12} center color="white">
         {data?.map((todo) => {
           return (
             <List.Item

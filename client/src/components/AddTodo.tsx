@@ -30,7 +30,7 @@ function AddTodo({ mutate }: { mutate: KeyedMutator<Todo[]> }) {
 
   return (
     <>
-      <Modal opened={open} onClose={() => setOpen(false)} title="Create todo">
+      <Modal opened={open} onClose={() => setOpen(false)} title="Create To Do">
         <form onSubmit={form.onSubmit(createTodo)}>
           <TextInput
             required
@@ -47,12 +47,18 @@ function AddTodo({ mutate }: { mutate: KeyedMutator<Todo[]> }) {
             {...form.getInputProps('body')}
           />
 
-          <Button type="submit">Create todo</Button>
+          <Button type="submit">Create To Do</Button>
         </form>
       </Modal>
 
       <Group position="center">
-        <Button fullWidth mb={12} onClick={() => setOpen(true)}>
+        <Button
+          fullWidth
+          mb={12}
+          onClick={() => setOpen(true)}
+          variant="gradient"
+          gradient={{ from: 'indigo', to: 'cyan' }}
+        >
           ADD TODO
         </Button>
       </Group>
