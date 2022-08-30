@@ -13,6 +13,7 @@ type Todo struct {
 	Title string `json:"title"`
 	Done  bool   `json:"done"`
 	Body  string `json:"body"`
+	Deleted  bool   `json:"deleted"`
 }
 
 func main() {
@@ -25,12 +26,14 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
+	// Todos kan dalam bentuk array dari variabel todo
 	todos := []Todo{}
 
 	app.Get("/healthcheck", func(c *fiber.Ctx) error {
 		return c.SendString("OK")
 	})
 
+	// gua buat todo baru untuk ngisi variable todonya
 	app.Post("/api/todos", func(c *fiber.Ctx) error {
 		todo := &Todo{}
 
@@ -59,6 +62,20 @@ func main() {
 				break
 			}
 		}
+
+		return c.JSON(todos)
+	})
+
+	app.Delete("/api/todos/:id/deleted", func(c *fiber.Ctx) error {
+		todo := &Todo{}
+
+		if err := c.BodyParser(todo); err != nil {
+			return err
+		}
+
+		todo.ID = len(todos) - 1
+
+		todos = append(todos, *todo)
 
 		return c.JSON(todos)
 	})

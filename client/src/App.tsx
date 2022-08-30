@@ -1,8 +1,9 @@
-import { Box, List, ThemeIcon } from '@mantine/core';
-import { CheckCircleFillIcon } from '@primer/octicons-react';
+import { Box, List, ThemeIcon, Title } from '@mantine/core';
+import { CheckCircleFillIcon, XCircleFillIcon } from '@primer/octicons-react';
 import useSWR from 'swr';
 import './App.css';
 import AddTodo from './components/AddTodo';
+import axios from 'axios';
 
 export interface Todo {
   id: number;
@@ -27,44 +28,59 @@ function App() {
     mutate(updated);
   }
 
-  return (
-    <Box
-      sx={(theme) => ({
-        padding: '2rem',
-        width: '100%',
-        maxWidth: '40rem',
-        margin: '0 auto',
-        background: '#23DEB7',
-        borderRadius: '20px',
-        marginTop: '5rem',
-      })}
-    >
-      <List spacing="xs" size="md" mb={12} center color="white">
-        {data?.map((todo) => {
-          return (
-            <List.Item
-              onClick={() => markTodoAdDone(todo.id)}
-              key={`todo_list__${todo.id}`}
-              icon={
-                todo.done ? (
-                  <ThemeIcon color="teal" size={24} radius="xl">
-                    <CheckCircleFillIcon size={20} />
-                  </ThemeIcon>
-                ) : (
-                  <ThemeIcon color="gray" size={24} radius="xl">
-                    <CheckCircleFillIcon size={20} />
-                  </ThemeIcon>
-                )
-              }
-            >
-              {todo.title}
-            </List.Item>
-          );
-        })}
-      </List>
+  const removeData = async (id: number) => {
+    try {
+      const deleted = await axios.delete(`${ENDPOINT}/api/todos/${id}/delete`);
+      console.log('To do successfully deleted');
+    } catch (error) {
+      alert(error);
+    }
+  };
 
-      <AddTodo mutate={mutate} />
-    </Box>
+  return (
+    <>
+      <Box
+        sx={(theme) => ({
+          padding: '2rem',
+          width: '100%',
+          maxWidth: '40rem',
+          margin: '0 auto',
+          background: '#23DEB7',
+          borderRadius: '20px',
+          marginTop: '5rem',
+        })}
+      >
+        <Title order={1} color="theme.white" align="center">
+          TO DO LIST
+        </Title>
+        <List spacing="xs" size="md" mb={12} center color="white">
+          {data?.map((todo) => {
+            return (
+              <List.Item
+                onClick={() => markTodoAdDone(todo.id)}
+                key={`todo_list__${todo.id}`}
+                icon={
+                  todo.done ? (
+                    <ThemeIcon color="teal" size={24} radius="xl">
+                      <CheckCircleFillIcon size={20} />
+                    </ThemeIcon>
+                  ) : (
+                    <ThemeIcon color="gray" size={24} radius="xl">
+                      <CheckCircleFillIcon size={20} />
+                    </ThemeIcon>
+                  )
+                }
+              >
+                {todo.title}
+                {todo.body}
+              </List.Item>
+            );
+          })}
+        </List>
+
+        <AddTodo mutate={mutate} />
+      </Box>
+    </>
   );
 }
 

@@ -11,6 +11,7 @@
     "@mantine/core": "^3.6.14",
     "@mantine/hooks": "^3.6.14",
     "@primer/octicons-react": "^17.0.0",
+    "axios": "^0.27.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "swr": "^1.2.2"
